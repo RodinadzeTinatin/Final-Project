@@ -1,4 +1,5 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using System;
+using System.Runtime.ExceptionServices;
 
 namespace NumberGuesser
 {
@@ -8,9 +9,24 @@ namespace NumberGuesser
         {
             Console.WriteLine("Welcome to the number guessing application! ^^");
 
+            string level = SetLevel();
+
+
+            int randNumber = GenerateRandomNum(level);
+
+            Console.WriteLine("\nGreat, let's start guessing! Remember, you have only 10 attempts.");
+
+            GuessNum(randNumber, level);
+
+
+        }
+
+
+        static string SetLevel()
+        {
             string level;
-            bool validLevel = false;
-            do
+
+            while (true)
             {
                 Console.WriteLine("Select the difficulty level (e - Easy, m - Medium, h - Hard):");
                 level = Console.ReadLine().ToLower();
@@ -19,57 +35,94 @@ namespace NumberGuesser
                     case "e":
                     case "m":
                     case "h":
-                        validLevel = true;
-                        break;
+                        return level;
                     default:
                         Console.WriteLine("Non-valid level. Try again, please.");
                         break;
                 }
             }
-            while (validLevel == false);
+        }
 
-
-
+        static int GenerateRandomNum (string level)
+        {
             Random rnd = new Random();
-            int randNumber=0;
             switch (level)
             {
                 case "e":
-                    randNumber = rnd.Next(1,26);
+                    return  rnd.Next(1, 26);
+                case "m":
+                    return  rnd.Next(1, 51);
+                case "h":
+                    return  rnd.Next(1, 101);
+                default:
+                    return 0;
+            }
+        }
+
+        static int GetGuessFromUser(string level)
+        {
+            int guess;
+            int maxRange;
+
+            switch (level)
+            {
+                case "e":
+                    maxRange = 25;
                     break;
                 case "m":
-                    randNumber = rnd.Next(1,51);
+                    maxRange = 50;
                     break;
                 case "h":
-                    randNumber = rnd.Next(1,101);
+                    maxRange = 100;
+                    break;
+                default:
+                    maxRange = 25;
                     break;
             }
 
-            Console.WriteLine("\nGreat, let's start guessing! Remember, you have only 10 attemps.");
-            Console.WriteLine("Enter your guess:");
-            string strGuess = Console.ReadLine();
 
-            int guess;
-            while (!int.TryParse(strGuess, out guess))
+            while (true)
             {
-                Console.WriteLine("Not a valid number. Please enter a valid integer:");
-                strGuess = Console.ReadLine();
+                Console.WriteLine($"\nEnter your guess (0 to {maxRange}):");
+                string strGuess = Console.ReadLine();
+
+                if (int.TryParse(strGuess, out guess))
+                {
+                    if (guess >= 0 && guess <= maxRange)
+                    {
+                        return guess;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Please enter a number between 0 and {maxRange}.");
+                        continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Not a valid number. Please enter a valid integer:");
+                    continue;
+                }
             }
+        }
 
-
+        static void GuessNum(int randNum, string level)
+        {
             int attempt = 1;
+            int guess;
 
-            while (attempt < 10)
+            while (attempt <= 10)
             {
-                if (guess < randNumber)
+                guess = GetGuessFromUser(level);
+                if (guess < randNum)
                 {
                     Console.WriteLine("Your guess is less than the number");
-                    Console.WriteLine($"Attempts left: {10-attempt}");
+                    Console.WriteLine($"Attempts left: {10 - attempt}");
                 }
-                else if (guess > randNumber)
+                else if (guess > randNum)
                 {
                     Console.WriteLine("Your guess is more than the number");
-                    Console.WriteLine($"Attempts left: {10-attempt}");
+                    Console.WriteLine($"Attempts left: {10 - attempt}");
                 }
                 else
                 {
@@ -77,20 +130,11 @@ namespace NumberGuesser
                     break;
                 }
                 attempt++;
-                Console.WriteLine("\nEnter your guess:");
-                strGuess = Console.ReadLine();
-
-                while (!int.TryParse(strGuess, out guess))
-                {
-                    Console.WriteLine("Not a valid number. Please enter a valid integer:");
-                    strGuess = Console.ReadLine();
-                }
             }
-            if (attempt == 10)
+            if (attempt > 10)
             {
-            Console.WriteLine("Sorry, you've used all your attempts. The correct number was: " + randNumber);
+                Console.WriteLine("\n\tSorry, you've used all your attempts. The correct number was: " + randNum);
             }
-
         }
     }
 }

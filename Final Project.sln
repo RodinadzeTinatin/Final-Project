@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumberGuesser", "NumberGues
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangmanApp", "HangmanApp\HangmanApp.csproj", "{42ECDAE9-E7D2-4925-84F7-4ED5B299799A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATM Operations app", "ATM Operations app\ATM Operations app.csproj", "{DE03D878-B92E-4B91-B8C9-3699AAA3EA4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATM Operations app", "ATM Operations app\ATM Operations app.csproj", "{DE03D878-B92E-4B91-B8C9-3699AAA3EA4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

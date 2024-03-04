@@ -10,90 +10,88 @@
             do
             {
 
-                Console.WriteLine("\nEnter your first number:");
-                string strNum1 = Console.ReadLine();
+                double num1 = GetUserInput("Enter your first number: ");
+                double num2 = GetUserInput("Enter your second number: ");
+
+                string oper = GetOperator();
                 
-                double num1;
-                while (double.TryParse(strNum1, out num1) == false)
-                {
-                    Console.WriteLine("Not valid number. Please, enter valid number:");
-                    strNum1 = Console.ReadLine() ;
-                }
+
+                PerformOperation(num1, num2, oper);
 
 
-                Console.WriteLine("Enter second number:");
-                string strNum2= Console.ReadLine();
-
-                double num2;
-                while (double.TryParse(strNum2, out num2) == false)
-                {
-                    Console.WriteLine("Not valid number. Please, enter valid number:");
-                    strNum2 = Console.ReadLine();
-                }
-
-
-
-                string oper;
-                bool validOperator = false;
                 do
                 {
-                    Console.WriteLine("Enter operation you want to perform (+ for add, - for subtract, / for divide, * for multiply )");
-                    oper = Console.ReadLine();
-
-                    switch (oper)
-                    {
-                        case "+":
-                        case "-":
-                        case "/":
-                        case "*":
-                            validOperator = true;
-                            break;
-                        default:
-                            Console.WriteLine("Wrong operator. Please try again.");
-                            break;
-                    }
-                } while (validOperator == false);
-
-
-                //გადავიტანო თუ არა მოცემული ნაწილი ცალკე ფუნქციაში / კლასში
-                double result = 0;
-
-                switch (oper)
-                {
-                    case "+":
-                        result = Math.Round(num1 + num2,2);
-                        Console.WriteLine($"{num1} + {num2} = {result}");
-                        break;
-                    case "-":
-                        result = Math.Round(num1 - num2, 2);
-                        Console.WriteLine($"{num1} - {num2} = {result}");
-                        break;
-                    case "/":
-                        while (num2 == 0)
-                        {
-                            Console.WriteLine("You can't divide by zero. Please enter non-zero second number:");
-                            strNum2 = Console.ReadLine();
-
-                            while (double.TryParse(strNum2, out num2) == false)
-                            {
-                                Console.WriteLine("Not valid number. Please, enter valid number:");
-                                strNum2 = Console.ReadLine();
-                            }
-                        }
-                        result = Math.Round(num1 / num2, 2);
-                        Console.WriteLine($"{num1} / {num2} = {result}");
-                        break;
-                    case "*":
-                        result = Math.Round(num1 * num2, 2);
-                        Console.WriteLine($"{num1} * {num2} = {result}");
-                        break;
-                }
-
-                Console.WriteLine("\nDo you want to continue using calculator?(y for yes, n for no)");
-                next_calculation = Console.ReadLine();
+                    Console.WriteLine("\nDo you want to continue using calculator? (y for yes, n for no)");
+                    next_calculation = Console.ReadLine();
+                } 
+                while (next_calculation != "y" && next_calculation != "n");
             }
             while (next_calculation == "y");
         }
 
+
+        static double GetUserInput(string message)
+        {
+            double num;
+            string strNum;
+
+            Console.WriteLine(message);
+            strNum = Console.ReadLine();
+
+            while(!double.TryParse(strNum, out num))
+            {
+                Console.WriteLine("Not valid number. Please, enter valid number:");
+                strNum = Console.ReadLine();
+            }
+
+            return num;
+        }
+
+        static string GetOperator()
+        {
+            string oper;
+
+            while (true)
+            {
+                Console.WriteLine("Enter operation you want to perform (+ for add, - for subtract, / for divide, * for multiply )");
+                oper = Console.ReadLine();
+                if (oper != "+" && oper != "-" && oper != "/" && oper != "*")
+                {
+                    Console.WriteLine("Wrong operator. Please try again.");
+                    continue;
+                }
+                break;
+            }
+            return oper;
+        }
+
+        static void PerformOperation(double num1, double num2, string oper)
+        {
+            double result = 0;
+            switch (oper)
+            {
+                case "+":
+                    result = Math.Round(num1 + num2, 2);
+                    Console.WriteLine($"{num1} + {num2} = {result}");
+                    break;
+                case "-":
+                    result = Math.Round(num1 - num2, 2);
+                    Console.WriteLine($"{num1} - {num2} = {result}");
+                    break;
+                case "/":
+                    while (num2 == 0)
+                    {
+                        Console.WriteLine("You can't divide by zero. Please enter non-zero second number:");
+                        num2 = GetUserInput("Enter your second number:");
+                    }
+                    result = Math.Round(num1 / num2, 2);
+                    Console.WriteLine($"{num1} / {num2} = {result}");
+                    break;
+                case "*":
+                    result = Math.Round(num1 * num2, 2);
+                    Console.WriteLine($"{num1} * {num2} = {result}");
+                    break;
+            }
+        }
     }
 }
