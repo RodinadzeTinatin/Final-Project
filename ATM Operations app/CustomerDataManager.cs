@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ATM_Operations_app
@@ -11,6 +13,7 @@ namespace ATM_Operations_app
     {
         public static List<Customers> customers = new List<Customers>();
         private static int lastCustomerId = 0;
+        static Regex nameValidationRegex = new Regex("^[a-zA-Z]+$");
 
 
         public static void LoadCustomerData()
@@ -70,9 +73,15 @@ namespace ATM_Operations_app
             {
                 Console.Write("Enter your name: ");
                 name = Console.ReadLine();
+                
                 if (name == "")
                 {
                     Console.WriteLine("Your name can not be empty.");
+                    continue;
+                }
+                else if (!nameValidationRegex.IsMatch(name))
+                {
+                    Console.WriteLine("Invalid name.");
                     continue;
                 }
                 break;
@@ -85,6 +94,11 @@ namespace ATM_Operations_app
                 if (surname == "")
                 {
                     Console.WriteLine("Your surname can not be empty.");
+                    continue;
+                }
+                else if (!nameValidationRegex.IsMatch(surname))
+                {
+                    Console.WriteLine("Invalid surname.");
                     continue;
                 }
                 break;
